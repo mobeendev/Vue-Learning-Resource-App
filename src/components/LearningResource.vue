@@ -1,24 +1,24 @@
 <template>
-<base-card>
+  <base-card>
     <li>
-        <div>
+      <div>
         <header>
-            <h3>{{ title }}</h3>
-            <button>Delete</button>
+          <h3>{{ title }}</h3>
+          <base-button> Delete </base-button>
         </header>
-        </div>
-        <p>{{ description }}</p>
-        <nav>
+      </div>
+      <p>{{ description }}</p>
+      <nav>
         <a :href="link">View Resource</a>
-        </nav>
+      </nav>
     </li>
   </base-card>
 </template>
 
 <script>
 export default {
-  props: ['title', 'description' , 'link']
-}
+  props: ['title', 'description', 'link'],
+};
 </script>
 
 <style scoped>
