@@ -27,7 +27,8 @@ export default {
   provide() {
     return {
       resources: this.storedResources,
-      myMethod: this.addRes,
+      addResource: this.addRes,
+      deleteResourceItem: this.deleteRes,
     };
   },
   data() {
@@ -62,15 +63,20 @@ export default {
       console.log(tab);
       this.selectedTab = tab;
     },
-    addRes: function (title = '', description = null, link = null) {
-      const newRes = {
+    deleteRes(itemId) {
+      const indexOfRes = this.storedResources.findIndex(
+        (item) => item.id === itemId
+      );
+      this.storedResources.splice(indexOfRes, 1);
+    },
+    addRes: function (title, description, link) {
+      const newResource = {
         title: title,
         description: description,
         link: link,
       };
-
-      console.log('updating res....101010', this.storedResources);
-      this.storedResources.push(newRes);
+      this.storedResources.unshift(newResource);
+      this.selectedTab = 'stored-resources';
     },
   },
 };

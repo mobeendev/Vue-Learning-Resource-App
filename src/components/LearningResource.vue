@@ -3,8 +3,14 @@
     <li>
       <div>
         <header>
-          <h3>{{ title }}</h3>
-          <base-button> Delete </base-button>
+          <h3>{{ title }} - {{ itemId }}</h3>
+          <base-button
+            ref="resItem"
+            id="itemId"
+            @click="deleteResource(itemId)"
+          >
+            Delete
+          </base-button>
         </header>
       </div>
       <p>{{ description }}</p>
@@ -17,7 +23,13 @@
 
 <script>
 export default {
-  props: ['title', 'description', 'link'],
+  props: ['title', 'description', 'link', 'itemId'],
+  inject: ['deleteResourceItem'],
+  methods: {
+    deleteResource(itemId) {
+      this.deleteResourceItem(itemId);
+    },
+  },
 };
 </script>
 
