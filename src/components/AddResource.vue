@@ -17,23 +17,72 @@
   </base-dialog>
   <base-card>
     <form @submit.prevent="submitData">
-      <div class="form-control">
+      <div
+        class="form-control"
+        :class="{ invalid: enteredTitleValidity === 'invalid' }"
+      >
         <label for="title">Title</label>
-        <input id="title" name="title" type="text" ref="titleInput" />
+        <input
+          id="title"
+          name="title"
+          type="text"
+          ref="titleInput"
+          @blur="validateInput"
+        />
       </div>
-      <div class="form-control">
+      <div
+        class="form-control"
+        :class="{ invalid: enteredDescriptionValidity === 'invalid' }"
+      >
         <label for="description">Description</label>
         <textarea
           id="description"
           name="description"
           rows="3"
           ref="descInput"
+          @blur="validateInput"
         ></textarea>
       </div>
-      <div class="form-control">
+      <div
+        class="form-control"
+        :class="{ invalid: enteredUrlValidity === 'invalid' }"
+      >
         <label for="link">Link</label>
-        <input id="link" name="link" type="url" ref="linkInput" />
+        <input
+          id="link"
+          name="link"
+          type="url"
+          ref="linkInput"
+          @blur="validateInput"
+        />
       </div>
+
+      <div class="form-control">
+        <h4>Did you liked this form?</h4>
+        <div class="choices">
+          <div>
+            <input
+              id="interest-news"
+              name="likeform"
+              type="checkbox"
+              value="yes"
+              v-model="likeform"
+            />
+            <label for="like-form">Yes</label>
+          </div>
+          <div>
+            <input
+              id="interest-tutorials"
+              name="likeform"
+              type="checkbox"
+              value="no"
+              v-model="likeform"
+            />
+            <label for="like-form">No</label>
+          </div>
+        </div>
+      </div>
+
       <div>
         <base-button type="submit">Add Resource</base-button>
       </div>
@@ -50,14 +99,40 @@ export default {
   data() {
     return {
       inputIsInvalid: false,
+      enteredTitleValidity: 'pending',
+      enteredDescriptionValidity: 'pending',
+      enteredUrlValidity: 'pending',
+      likeform: [],
     };
   },
   methods: {
-    submitData: function () {
+    validateInput() {
       const enteredTitle = this.$refs.titleInput.value;
       const enteredDescription = this.$refs.descInput.value;
       const enteredUrl = this.$refs.linkInput.value;
 
+      if (enteredTitle.trim() === '') {
+        this.enteredTitleValidity = 'invalid';
+      } else {
+        this.enteredTitleValidity = 'valid';
+      }
+
+      if (enteredDescription.trim() === '') {
+        this.enteredDescriptionValidity = 'invalid';
+      } else {
+        this.enteredDescriptionValidity = 'valid';
+      }
+
+      if (enteredUrl.trim() === '') {
+        this.enteredUrlValidity = 'invalid';
+      } else {
+        this.enteredUrlValidity = 'valid';
+      }
+    },
+    submitData: function () {
+      const enteredTitle = this.$refs.titleInput.value;
+      const enteredDescription = this.$refs.descInput.value;
+      const enteredUrl = this.$refs.linkInput.value;
       if (
         enteredTitle.trim() === '' ||
         enteredDescription.trim() === '' ||
@@ -65,6 +140,8 @@ export default {
       ) {
         this.inputIsInvalid = true;
         return;
+      } else {
+        this.userNameValidity = 'valid';
       }
 
       this.addResource(enteredTitle, enteredDescription, enteredUrl);
@@ -101,6 +178,47 @@ textarea:focus {
 }
 
 .form-control {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
+}
+
+.form-control.invalid input {
+  border-color: red;
+}
+
+.form-control.invalid label {
+  color: red;
+}
+
+input,
+select {
+  display: block;
+  width: 100%;
+  font: inherit;
+  margin-top: 0.5rem;
+}
+
+select {
+  width: auto;
+}
+
+input[type='checkbox'],
+input[type='radio'] {
+  display: inline-block;
+  width: auto;
+  margin-right: 1rem;
+}
+
+input[type='checkbox'] + label,
+input[type='radio'] + label {
+  font-weight: normal;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
