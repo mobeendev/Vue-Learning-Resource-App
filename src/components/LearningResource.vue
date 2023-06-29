@@ -3,7 +3,7 @@
     <li>
       <div>
         <header>
-          <h3>{{ title }} - {{ itemId }}</h3>
+          <h3>{{ title }}</h3>
           <base-button
             ref="resItem"
             id="itemId"
@@ -14,6 +14,11 @@
         </header>
       </div>
       <p>{{ description }}</p>
+      <p>Is this resource used by the Author - {{ userChoice }}</p>
+      <p>Authors mode of learning -</p>
+      <ul>
+        <li v-for="userRes in resourcesList">{{ userRes }}</li>
+      </ul>
       <nav>
         <a :href="link">View Resource</a>
       </nav>
@@ -23,7 +28,14 @@
 
 <script>
 export default {
-  props: ['title', 'description', 'link', 'itemId'],
+  props: [
+    'title',
+    'description',
+    'link',
+    'itemId',
+    'resourcesList',
+    'userChoice',
+  ],
   inject: ['deleteResourceItem'],
   methods: {
     deleteResource(itemId) {
@@ -62,5 +74,11 @@ a {
 a:hover,
 a:active {
   color: #c89300;
+}
+ul {
+  margin-top: 1rem;
+  margin: auto;
+  margin-bottom: 0.3rem;
+  font-size: 15px;
 }
 </style>

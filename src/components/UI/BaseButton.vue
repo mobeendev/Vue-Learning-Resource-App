@@ -36,4 +36,7 @@ button:active {
 .flat:active {
   background-color: #edd2ff;
 }
+.right {
+  margin-left: auto;
+}
 </style>

@@ -16,6 +16,10 @@
     </template>
   </base-dialog>
   <base-card>
+    <div class="top-heading">
+      <h2>Share your learning resources with us.</h2>
+    </div>
+
     <form @submit.prevent="submitData">
       <div
         class="form-control"
@@ -57,34 +61,93 @@
         />
       </div>
 
-      <div class="form-control">
-        <h4>Did you liked this form?</h4>
-        <div class="choices">
-          <div>
+      <div
+        class="form-control"
+        :class="{ invalid: userResourceValidity === 'invalid' }"
+      >
+        <h4>How do you learn?</h4>
+
+        <div class="">
+          <div class="checkbox-row">
             <input
-              id="interest-news"
-              name="likeform"
+              id="vidoes"
+              name="useResource"
               type="checkbox"
-              value="yes"
-              v-model="likeform"
+              value="Vidoe Tutorials 📹"
+              @blur="validateInput"
+              v-model="useResource"
             />
-            <label for="like-form">Yes</label>
+            <label for="like-form"> Video Courses 📹</label>
           </div>
-          <div>
+          <div class="checkbox-row">
             <input
-              id="interest-tutorials"
-              name="likeform"
+              id="blogs"
+              name="useResource"
               type="checkbox"
-              value="no"
-              v-model="likeform"
+              value="Books 📚"
+              @blur="validateInput"
+              v-model="useResource"
             />
-            <label for="like-form">No</label>
+            <label for="like-form">Books 📚</label>
+          </div>
+          <div class="checkbox-row">
+            <input
+              id="blogs"
+              name="useResource"
+              type="checkbox"
+              value="Blogs 🌐"
+              @blur="validateInput"
+              v-model="useResource"
+            />
+            <label for="like-form">Blogs 🌐</label>
+          </div>
+          <div class="checkbox-row">
+            <input
+              id="others"
+              name="useResource"
+              type="checkbox"
+              value="Others ♾️"
+              @blur="validateInput"
+              v-model="useResource"
+            />
+            <label for="like-form">Others ♾️</label>
           </div>
         </div>
       </div>
 
-      <div>
-        <base-button type="submit">Add Resource</base-button>
+      <div
+        class="form-control"
+        :class="{ invalid: userChoiceValidity === 'invalid' }"
+      >
+        <h4>Do you use this learning resource?</h4>
+        <div class="choices">
+          <div>
+            <input
+              id="how-video"
+              name="userChoice"
+              v-model="userChoice"
+              type="radio"
+              value="Yes 😀"
+              @blur="validateInput"
+            />
+            <label for="how-video">Yes 😀</label>
+          </div>
+          <div>
+            <input
+              id="how-blogs"
+              name="userChoice"
+              v-model="userChoice"
+              type="radio"
+              value="No 😐"
+              @blur="validateInput"
+            />
+            <label for="how-blogs">No 😐</label>
+          </div>
+          <div></div>
+        </div>
+      </div>
+      <div style="display: flex">
+        <base-button mode="right" type="submit">Add Resource</base-button>
       </div>
     </form>
   </base-card>
@@ -102,7 +165,10 @@ export default {
       enteredTitleValidity: 'pending',
       enteredDescriptionValidity: 'pending',
       enteredUrlValidity: 'pending',
-      likeform: [],
+      userResourceValidity: 'pending',
+      useResource: [],
+      userChoiceValidity: 'pending',
+      userChoice: null,
     };
   },
   methods: {
@@ -128,11 +194,23 @@ export default {
       } else {
         this.enteredUrlValidity = 'valid';
       }
+      if (this.useResource.length === 0) {
+        this.userResourceValidity = 'invalid';
+      } else {
+        this.userResourceValidity = 'valid';
+      }
+
+      if (this.userChoice == null) {
+        this.userChoiceValidity = 'invalid';
+      } else {
+        this.userChoiceValidity = 'valid';
+      }
     },
     submitData: function () {
       const enteredTitle = this.$refs.titleInput.value;
       const enteredDescription = this.$refs.descInput.value;
       const enteredUrl = this.$refs.linkInput.value;
+      this.validateInput();
       if (
         enteredTitle.trim() === '' ||
         enteredDescription.trim() === '' ||
@@ -143,8 +221,13 @@ export default {
       } else {
         this.userNameValidity = 'valid';
       }
-
-      this.addResource(enteredTitle, enteredDescription, enteredUrl);
+      this.addResource(
+        enteredTitle,
+        enteredDescription,
+        enteredUrl,
+        this.useResource,
+        this.userChoice
+      );
     },
 
     confirmError: function () {
@@ -155,6 +238,12 @@ export default {
 </script>
 
 <style scoped>
+.top-heading {
+  color: #a31b5f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 label {
   font-weight: bold;
   display: block;
@@ -187,6 +276,11 @@ textarea:focus {
 
 .form-control.invalid label {
   color: red;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: baseline;
 }
 
 input,

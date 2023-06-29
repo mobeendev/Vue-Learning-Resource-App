@@ -7,6 +7,8 @@
       :description="res.description"
       :link="res.link"
       :itemId="res.id"
+      :resourcesList="res.userResources"
+      :userChoice="res.choice"
     ></learning-resource>
   </ul>
 </template>

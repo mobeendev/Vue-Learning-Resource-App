@@ -40,12 +40,16 @@ export default {
           title: 'Official Guide',
           description: 'The official Vue.js documentation.',
           link: 'https://vuejs.org',
+          userResources: ['Videos Tutorials  📹', 'Blogs 🌐', 'Books 📚'],
+          choice: 'Yes 😀',
         },
         {
           id: 'google',
           title: 'Google',
           description: 'Learn to google...',
           link: 'https://google.org',
+          userResources: ['Books 📚', 'Blogs 🌐'],
+          choice: 'No 😐',
         },
       ],
     };
@@ -69,13 +73,19 @@ export default {
       );
       this.storedResources.splice(indexOfRes, 1);
     },
-    addRes: function (title, description, link) {
+    addRes: function (title, description, link, userResources, choice) {
       const newResource = {
+        id: crypto.randomUUID(),
         title: title,
         description: description,
         link: link,
+        userResources: userResources,
+        choice: choice,
       };
+      console.log(title, description, link, userResources, choice);
       this.storedResources.unshift(newResource);
+      console.log(this.storedResources);
+
       this.selectedTab = 'stored-resources';
     },
   },
